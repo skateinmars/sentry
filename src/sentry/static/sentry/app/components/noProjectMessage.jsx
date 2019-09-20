@@ -20,19 +20,25 @@ export default class NoProjectMessage extends React.Component {
     children: PropTypes.node,
     organization: SentryTypes.Organization,
     className: PropTypes.string,
+    projects: PropTypes.arrayOf(SentryTypes.Project),
   };
 
   render() {
-    const {children, organization, className} = this.props;
+    const {children, organization, className, projects} = this.props;
     const orgId = organization.slug;
     const canCreateProject = organization.access.includes('project:write');
     const canJoinTeam = organization.access.includes('team:read');
 
-    const {isSuperuser} = ConfigStore.get('user');
+    let hasProjects;
+    if (projects) {
+      hasProjects = projects.length > 0;
+    } else {
+      const {isSuperuser} = ConfigStore.get('user');
 
-    const hasProjects = isSuperuser
-      ? organization.projects.some(p => p.hasAccess)
-      : organization.projects.some(p => p.isMember && p.hasAccess);
+      hasProjects = isSuperuser
+        ? organization.projects.some(p => p.hasAccess)
+        : organization.projects.some(p => p.isMember && p.hasAccess);
+    }
 
     return hasProjects ? (
       children
