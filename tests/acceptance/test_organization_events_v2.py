@@ -201,7 +201,7 @@ class OrganizationEventsV2Test(AcceptanceTestCase, SnubaTestCase):
     def test_transactions_query(self, mock_now):
         mock_now.return_value = before_now().replace(tzinfo=pytz.utc)
         event_data = load_data("transaction")
-        self.store_event(data=event_data, project_id=self.project.id, assert_no_errors=False)
+        self.store_event(data=event_data, project_id=self.project.id, assert_no_errors=True)
 
         with self.feature(FEATURE_NAMES):
             self.browser.get(self.path + "?" + transactions_query + transaction_absolute_dates)
@@ -212,9 +212,7 @@ class OrganizationEventsV2Test(AcceptanceTestCase, SnubaTestCase):
     def test_modal_from_transactions_query(self, mock_now):
         mock_now.return_value = before_now().replace(tzinfo=pytz.utc)
         event_data = load_data("transaction")
-        event = self.store_event(
-            data=event_data, project_id=self.project.id, assert_no_errors=False
-        )
+        event = self.store_event(data=event_data, project_id=self.project.id, assert_no_errors=True)
 
         with self.feature(FEATURE_NAMES):
             # Get the list page
