@@ -296,7 +296,7 @@ describe('OrganizationDashboard', function() {
         routerContext
       );
 
-      expect(wrapper.find('Alert').exists()).toBe(true);
+      expect(wrapper.find('LoadingError').exists()).toBe(true);
     });
   });
 });

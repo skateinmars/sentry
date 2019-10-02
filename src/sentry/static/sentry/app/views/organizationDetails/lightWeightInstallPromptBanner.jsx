@@ -5,8 +5,7 @@ import _ from 'lodash';
 import InstallPromptBanner from 'app/views/organizationDetails/installPromptBanner';
 
 import SentryTypes from 'app/sentryTypes';
-import withApi from 'app/utils/withApi';
-import withTeamsForUser from 'app/utils/withTeamsForUser';
+import Projects from 'app/utils/projects';
 
 class LightWeightInstallPromptBanner extends React.Component {
   static propTypes = {
@@ -16,17 +15,18 @@ class LightWeightInstallPromptBanner extends React.Component {
     error: PropTypes.instanceOf(Error),
   };
 
-  render() {
-    if (this.props.loadingTeams || this.props.error) {
+  renderChildren = ({projects, fetching}) => {
+    if (fetching) {
       return null;
     }
+    return <InstallPromptBanner {...this.props} projects={projects} />;
+  };
+
+  render() {
     return (
-      <InstallPromptBanner
-        {...this.props}
-        projects={_.uniq(_.flatten(this.props.teams.map(team => team.projects)), 'id')}
-      />
+      <Projects orgId={this.props.organization.slug}>{this.renderChildren}</Projects>
     );
   }
 }
 
-export default withApi(withTeamsForUser(LightWeightInstallPromptBanner));
+export default LightWeightInstallPromptBanner;

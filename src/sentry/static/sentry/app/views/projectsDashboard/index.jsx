@@ -7,7 +7,7 @@ import styled from 'react-emotion';
 import _ from 'lodash';
 
 import {t} from 'app/locale';
-import Alert from 'app/components/alert';
+import LoadingError from 'app/components/loadingError';
 import Button from 'app/components/button';
 import IdBadge from 'app/components/idBadge';
 import NoProjectMessage from 'app/components/noProjectMessage';
@@ -54,9 +54,7 @@ class Dashboard extends React.Component {
     }
 
     if (error) {
-      return (
-        <Alert type="error">{t('An error occurred while fetching your projects')}</Alert>
-      );
+      return <LoadingError message="An error occurred while fetching your projects" />;
     }
 
     const filteredTeams = teams.filter(team => team.projects.length);
@@ -74,7 +72,7 @@ class Dashboard extends React.Component {
 
     if (showEmptyMessage) {
       return (
-        <NoProjectMessage organization={organization} projects={projects} detailed={0}>
+        <NoProjectMessage organization={organization} projects={projects}>
           {null}
         </NoProjectMessage>
       );
