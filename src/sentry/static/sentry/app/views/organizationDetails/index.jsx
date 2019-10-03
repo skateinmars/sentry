@@ -150,11 +150,12 @@ class OrganizationDetailsBody extends Component {
     }
     return (
       <React.Fragment>
-        {organization && this.props.detailed ? (
-          <InstallPromptBanner organization={organization} />
-        ) : (
-          <LightWeightInstallPromptBanner organization={organization} />
-        )}
+        {organization &&
+          (this.props.detailed ? (
+            <InstallPromptBanner organization={organization} />
+          ) : (
+            <LightWeightInstallPromptBanner organization={organization} />
+          ))}
         <ErrorBoundary>{this.props.children}</ErrorBoundary>
         <Footer />
       </React.Fragment>
