@@ -862,16 +862,6 @@ function routes() {
           component={errorHandler(LazyLoad)}
         />
       </Route>
-      {/* A route tree for lightweight organizational detail views */}
-      <Route path="/:orgId/" component={errorHandler(LightWeightOrganizationDetails)}>
-        <Route
-          path="/organizations/:orgId/projects/"
-          componentPromise={() =>
-            import(/* webpackChunkName: "ProjectsDashboard" */ 'app/views/projectsDashboard')
-          }
-          component={errorHandler(LazyLoad)}
-        />
-      </Route>
       <Route component={errorHandler(OrganizationDetails)}>
         <Route path="/settings/" name="Settings" component={SettingsWrapper}>
           <IndexRoute
@@ -1546,6 +1536,16 @@ function routes() {
         <Route
           path=":projectId/events/:eventId/"
           component={errorHandler(ProjectEventRedirect)}
+        />
+      </Route>
+      {/* A route tree for lightweight organizational detail views */}
+      <Route path="/:orgId/" component={errorHandler(LightWeightOrganizationDetails)}>
+        <Route
+          path="/organizations/:orgId/projects/"
+          componentPromise={() =>
+            import(/* webpackChunkName: "ProjectsDashboard" */ 'app/views/projectsDashboard')
+          }
+          component={errorHandler(LazyLoad)}
         />
       </Route>
       {hook('routes')}
