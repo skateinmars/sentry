@@ -6,6 +6,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import _ from 'lodash';
 
+import {sortProjects} from 'app/utils';
 import {t} from 'app/locale';
 import LoadingError from 'app/components/loadingError';
 import Button from 'app/components/button';
@@ -16,7 +17,6 @@ import ProjectsStatsStore from 'app/stores/projectsStatsStore';
 import SentryTypes from 'app/sentryTypes';
 import getRouteStringFromRoutes from 'app/utils/getRouteStringFromRoutes';
 import space from 'app/styles/space';
-import {sortProjects} from 'app/utils';
 import LoadingIndicator from 'app/components/loadingIndicator';
 import withApi from 'app/utils/withApi';
 import withOrganization from 'app/utils/withOrganization';
