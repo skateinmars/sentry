@@ -26,6 +26,7 @@ import profiler from 'app/utils/profiler';
 import space from 'app/styles/space';
 import withApi from 'app/utils/withApi';
 import withOrganizations from 'app/utils/withOrganizations';
+import {startRender, finishRender} from 'app/utils/apm';
 
 const ERROR_TYPES = {
   ORG_NOT_FOUND: 'ORG_NOT_FOUND',
@@ -66,6 +67,14 @@ const OrganizationContext = createReactClass({
   },
 
   componentDidMount() {
+    // TODO(apm): This is just temporary to compare to measuring didmount/didupdate
+    startRender('OrganizationContext');
+    this.mountSpan = Sentry.startSpan({
+      data: {},
+      op: 'r2',
+      description: '<OrganizationContext>',
+    });
+
     this.fetchData();
   },
 
@@ -90,8 +99,10 @@ const OrganizationContext = createReactClass({
       this.remountComponent();
     }
 
-    if (this.state.organization && this.props.finishProfile) {
-      this.props.finishProfile();
+    if (this.state.organization && this.mountSpan) {
+      finishRender('OrganizationContext');
+      Sentry.finishSpan(this.mountSpan);
+      this.mountSpan = null;
     }
   },
 
