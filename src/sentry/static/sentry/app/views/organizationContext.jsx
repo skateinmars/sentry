@@ -17,6 +17,8 @@ import GlobalSelectionStore from 'app/stores/globalSelectionStore';
 import HookStore from 'app/stores/hookStore';
 import LoadingError from 'app/components/loadingError';
 import LoadingIndicator from 'app/components/loadingIndicator';
+import OrganizationActions from 'app/actions/organizationActions';
+import OrganizationStore from 'app/stores/organizationStore';
 import OrganizationEnvironmentsStore from 'app/stores/organizationEnvironmentsStore';
 import ProjectActions from 'app/actions/projectActions';
 import ProjectsStore from 'app/stores/projectsStore';
@@ -123,6 +125,17 @@ const OrganizationContext = createReactClass({
       return;
     }
 
+    // check if the organization we are fetching matches the store's org
+    const storeOrg = OrganizationStore.getOrganization();
+    if (
+      storeOrg &&
+      storeOrg.slug === this.getOrganizationSlug() &&
+      storeOrg.projects &&
+      storeOrg.teams
+    ) {
+      return;
+    }
+
     metric.mark('organization-details-fetch-start');
     const promises = [
       this.props.api.requestPromise(this.getOrganizationDetailsEndpoint()),
@@ -146,6 +159,7 @@ const OrganizationContext = createReactClass({
 
         TeamStore.loadInitialData(data.teams);
         ProjectsStore.loadInitialData(data.projects);
+        OrganizationActions.update(data);
 
         // Make an exception for issue details in the case where it is accessed directly (e.g. from email)
         // We do not want to load the user's last used env/project in this case, otherwise will

@@ -2,6 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 
 import OrganizationDetails from 'app/views/organizationDetails';
+import OrganizationStore from 'app/stores/organizationStore';
 
 describe('OrganizationDetails', function() {
   beforeEach(function() {
@@ -14,6 +15,7 @@ describe('OrganizationDetails', function() {
       url: '/organizations/org-slug/environments/',
       body: [],
     });
+    OrganizationStore.reset();
   });
 
   describe('render()', function() {

@@ -7,6 +7,8 @@ import {OrganizationContext} from 'app/views/organizationContext';
 import ProjectsStore from 'app/stores/projectsStore';
 import TeamStore from 'app/stores/teamStore';
 import GlobalSelectionStore from 'app/stores/globalSelectionStore';
+import OrganizationActions from 'app/actions/organizationActions';
+import OrganizationStore from 'app/stores/organizationStore';
 
 jest.mock('app/stores/configStore', () => ({
   get: jest.fn(),
@@ -47,9 +49,11 @@ describe('OrganizationContext', function() {
       url: '/organizations/org-slug/environments/',
       body: TestStubs.Environments(),
     });
+    OrganizationStore.reset();
     jest.spyOn(TeamStore, 'loadInitialData');
     jest.spyOn(ProjectsStore, 'loadInitialData');
     jest.spyOn(GlobalSelectionStore, 'loadInitialData');
+    jest.spyOn(OrganizationActions, 'update');
   });
 
   afterEach(function() {
@@ -57,6 +61,7 @@ describe('OrganizationContext', function() {
     ProjectsStore.loadInitialData.mockRestore();
     ConfigStore.get.mockRestore();
     GlobalSelectionStore.loadInitialData.mockRestore();
+    OrganizationActions.update.mockRestore();
   });
 
   it('renders and fetches org', async function() {
@@ -74,6 +79,7 @@ describe('OrganizationContext', function() {
     expect(TeamStore.loadInitialData).toHaveBeenCalledWith(org.teams);
     expect(ProjectsStore.loadInitialData).toHaveBeenCalledWith(org.projects);
     expect(GlobalSelectionStore.loadInitialData).toHaveBeenCalledWith(org, {});
+    expect(OrganizationActions.update).toHaveBeenCalledWith(org);
   });
 
   it('resets TeamStore when unmounting', async function() {
