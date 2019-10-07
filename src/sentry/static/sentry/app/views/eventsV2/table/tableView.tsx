@@ -53,6 +53,7 @@ class TableView extends React.Component<TableViewProps, TableState> {
   state = {
     columnOrder: [],
     columnSortBy: [],
+    moveColumnStage: void 0,
   } as TableState;
 
   static getDerivedStateFromProps(props: TableViewProps): TableState {
@@ -60,6 +61,7 @@ class TableView extends React.Component<TableViewProps, TableState> {
     const {eventView} = props;
 
     return {
+      // TODO: can this be deferred to EventView?
       columnOrder: decodeColumnOrder({
         field: eventView.getFieldNames(),
         fieldnames: eventView.getFieldTitles(),
@@ -137,13 +139,18 @@ class TableView extends React.Component<TableViewProps, TableState> {
   };
 
   _moveColumnStage = (fromIndex: number, toIndex: number) => {
-    // TODO:
+    this.setState({
+      moveColumnStage: {
+        fromIndex,
+        toIndex,
+      },
+    });
   };
 
   /**
    * Please read the comment on `createColumn`
    */
-  _moveColumn = (fromIndex: number, toIndex: number) => {
+  _moveColumnCommit = (fromIndex: number, toIndex: number) => {
     const {location} = this.props;
     const {columnOrder, columnSortBy} = this.state;
 
@@ -222,7 +229,8 @@ class TableView extends React.Component<TableViewProps, TableState> {
         }}
         actions={{
           deleteColumn: this._deleteColumn,
-          moveColumn: this._moveColumn,
+          moveColumnCommit: this._moveColumnCommit,
+          moveColumnStage: this._moveColumnStage,
         }}
       />
     );
