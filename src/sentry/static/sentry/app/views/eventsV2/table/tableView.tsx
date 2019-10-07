@@ -15,6 +15,7 @@ import EventView from '../eventView';
 import SortLink from '../sortLink';
 import renderTableModalEditColumnFactory from './tableModalEditColumn';
 import {TableColumn, TableState, TableData, TableDataRow} from './types';
+import DraggableColumns from './draggableColumns';
 
 export type TableViewProps = {
   location: Location;
@@ -138,18 +139,6 @@ class TableView extends React.Component<TableViewProps, TableState> {
     setColumnStateOnLocation(location, nextColumnOrder, nextColumnSortBy);
   };
 
-  _onDragStart = (fromIndex: number) => {
-    console.log({
-      fromIndex,
-    });
-    // this.setState({
-    //   moveColumnStage: {
-    //     fromIndex,
-    //     toIndex,
-    //   },
-    // });
-  };
-
   /**
    * Please read the comment on `createColumn`
    */
@@ -230,27 +219,33 @@ class TableView extends React.Component<TableViewProps, TableState> {
     });
 
     return (
-      <GridEditable
-        isEditable
-        isLoading={isLoading}
-        error={error}
-        data={tableData ? tableData.data : []}
-        columnOrder={this.generateColumnOrder()}
-        columnSortBy={columnSortBy}
-        grid={{
-          renderHeaderCell: this._renderGridHeaderCell as any,
-          renderBodyCell: this._renderGridBodyCell as any,
+      <DraggableColumns>
+        {({startColumnDrag}) => {
+          return (
+            <GridEditable
+              isEditable
+              isLoading={isLoading}
+              error={error}
+              data={tableData ? tableData.data : []}
+              columnOrder={this.generateColumnOrder()}
+              columnSortBy={columnSortBy}
+              grid={{
+                renderHeaderCell: this._renderGridHeaderCell as any,
+                renderBodyCell: this._renderGridBodyCell as any,
+              }}
+              modalEditColumn={{
+                renderBodyWithForm: renderModalBodyWithForm as any,
+                renderFooter: renderModalFooter,
+              }}
+              actions={{
+                deleteColumn: this._deleteColumn,
+                moveColumnCommit: this._moveColumnCommit,
+                onDragStart: startColumnDrag,
+              }}
+            />
+          );
         }}
-        modalEditColumn={{
-          renderBodyWithForm: renderModalBodyWithForm as any,
-          renderFooter: renderModalFooter,
-        }}
-        actions={{
-          deleteColumn: this._deleteColumn,
-          moveColumnCommit: this._moveColumnCommit,
-          onDragStart: this._onDragStart,
-        }}
-      />
+      </DraggableColumns>
     );
   }
 }
