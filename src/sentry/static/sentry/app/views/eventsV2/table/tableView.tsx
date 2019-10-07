@@ -43,11 +43,11 @@ class TableView extends React.Component<TableViewProps, TableState> {
   constructor(props) {
     super(props);
 
-    this.setState = () => {
-      throw new Error(
-        'TableView: Please do not directly mutate the state of TableView. Please read the comments on TableView.createColumn for more info.'
-      );
-    };
+    // this.setState = () => {
+    //   throw new Error(
+    //     'TableView: Please do not directly mutate the state of TableView. Please read the comments on TableView.createColumn for more info.'
+    //   );
+    // };
   }
 
   state = {
@@ -138,13 +138,16 @@ class TableView extends React.Component<TableViewProps, TableState> {
     setColumnStateOnLocation(location, nextColumnOrder, nextColumnSortBy);
   };
 
-  _moveColumnStage = (fromIndex: number, toIndex: number) => {
-    this.setState({
-      moveColumnStage: {
-        fromIndex,
-        toIndex,
-      },
+  _onDragStart = (fromIndex: number) => {
+    console.log({
+      fromIndex,
     });
+    // this.setState({
+    //   moveColumnStage: {
+    //     fromIndex,
+    //     toIndex,
+    //   },
+    // });
   };
 
   /**
@@ -200,9 +203,24 @@ class TableView extends React.Component<TableViewProps, TableState> {
     return fieldRenderer(dataRow, {organization, location});
   };
 
+  generateColumnOrder = (): TableState['columnOrder'] => {
+    const {columnOrder} = this.state;
+
+    if (this.state.moveColumnStage) {
+      const {fromIndex, toIndex} = this.state.moveColumnStage;
+
+      const nextColumnOrder = [...columnOrder];
+      nextColumnOrder.splice(toIndex, 0, nextColumnOrder.splice(fromIndex, 1)[0]);
+
+      return nextColumnOrder;
+    }
+
+    return columnOrder;
+  };
+
   render() {
     const {isLoading, error, tableData} = this.props;
-    const {columnOrder, columnSortBy} = this.state;
+    const {columnSortBy} = this.state;
     const {
       renderModalBodyWithForm,
       renderModalFooter,
@@ -217,7 +235,7 @@ class TableView extends React.Component<TableViewProps, TableState> {
         isLoading={isLoading}
         error={error}
         data={tableData ? tableData.data : []}
-        columnOrder={columnOrder}
+        columnOrder={this.generateColumnOrder()}
         columnSortBy={columnSortBy}
         grid={{
           renderHeaderCell: this._renderGridHeaderCell as any,
@@ -230,7 +248,7 @@ class TableView extends React.Component<TableViewProps, TableState> {
         actions={{
           deleteColumn: this._deleteColumn,
           moveColumnCommit: this._moveColumnCommit,
-          moveColumnStage: this._moveColumnStage,
+          onDragStart: this._onDragStart,
         }}
       />
     );
