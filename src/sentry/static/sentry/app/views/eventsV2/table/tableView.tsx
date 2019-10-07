@@ -136,6 +136,10 @@ class TableView extends React.Component<TableViewProps, TableState> {
     setColumnStateOnLocation(location, nextColumnOrder, nextColumnSortBy);
   };
 
+  _moveColumnStage = (fromIndex: number, toIndex: number) => {
+    // TODO:
+  };
+
   /**
    * Please read the comment on `createColumn`
    */
