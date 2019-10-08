@@ -54,7 +54,6 @@ class TableView extends React.Component<TableViewProps, TableState> {
   state = {
     columnOrder: [],
     columnSortBy: [],
-    moveColumnStage: void 0,
   } as TableState;
 
   static getDerivedStateFromProps(props: TableViewProps): TableState {
@@ -192,21 +191,6 @@ class TableView extends React.Component<TableViewProps, TableState> {
     return fieldRenderer(dataRow, {organization, location});
   };
 
-  generateColumnOrder = (): TableState['columnOrder'] => {
-    const {columnOrder} = this.state;
-
-    if (this.state.moveColumnStage) {
-      const {fromIndex, toIndex} = this.state.moveColumnStage;
-
-      const nextColumnOrder = [...columnOrder];
-      nextColumnOrder.splice(toIndex, 0, nextColumnOrder.splice(fromIndex, 1)[0]);
-
-      return nextColumnOrder;
-    }
-
-    return columnOrder;
-  };
-
   render() {
     const {isLoading, error, tableData} = this.props;
     const {columnSortBy} = this.state;
@@ -227,7 +211,7 @@ class TableView extends React.Component<TableViewProps, TableState> {
               isLoading={isLoading}
               error={error}
               data={tableData ? tableData.data : []}
-              columnOrder={this.generateColumnOrder()}
+              columnOrder={this.state.columnOrder}
               columnSortBy={columnSortBy}
               grid={{
                 renderHeaderCell: this._renderGridHeaderCell as any,
