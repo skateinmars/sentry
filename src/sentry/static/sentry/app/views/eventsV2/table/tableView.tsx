@@ -228,7 +228,17 @@ class TableView extends React.Component<TableViewProps, TableState> {
     });
 
     return (
-      <DraggableColumns columnOrder={this.state.columnOrder}>
+      <DraggableColumns
+        columnOrder={this.state.columnOrder}
+        onDragDone={({draggingColumnIndex, destinationColumnIndex}) => {
+          if (
+            typeof draggingColumnIndex === 'number' &&
+            typeof destinationColumnIndex === 'number'
+          ) {
+            this._moveColumnCommit(draggingColumnIndex, destinationColumnIndex);
+          }
+        }}
+      >
         {({startColumnDrag, draggingColumnIndex, destinationColumnIndex}) => {
           return (
             <GridEditable
