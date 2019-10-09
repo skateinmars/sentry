@@ -237,7 +237,8 @@ class TableView extends React.Component<TableViewProps, TableState> {
         onDragDone={({draggingColumnIndex, destinationColumnIndex}) => {
           if (
             typeof draggingColumnIndex === 'number' &&
-            typeof destinationColumnIndex === 'number'
+            typeof destinationColumnIndex === 'number' &&
+            draggingColumnIndex !== destinationColumnIndex
           ) {
             this._moveColumnCommit(draggingColumnIndex, destinationColumnIndex);
           }
