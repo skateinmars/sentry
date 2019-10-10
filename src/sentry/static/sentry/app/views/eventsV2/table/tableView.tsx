@@ -44,11 +44,11 @@ class TableView extends React.Component<TableViewProps, TableState> {
   constructor(props) {
     super(props);
 
-    // this.setState = () => {
-    //   throw new Error(
-    //     'TableView: Please do not directly mutate the state of TableView. Please read the comments on TableView.createColumn for more info.'
-    //   );
-    // };
+    this.setState = () => {
+      throw new Error(
+        'TableView: Please do not directly mutate the state of TableView. Please read the comments on TableView.createColumn for more info.'
+      );
+    };
   }
 
   state = {
@@ -61,7 +61,6 @@ class TableView extends React.Component<TableViewProps, TableState> {
     const {eventView} = props;
 
     return {
-      // TODO: can this be deferred to EventView?
       columnOrder: decodeColumnOrder({
         field: eventView.getFieldNames(),
         fieldnames: eventView.getFieldTitles(),
