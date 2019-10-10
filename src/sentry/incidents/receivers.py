@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from sentry.incidents.models import AlertRule, IncidentSuspectCommit
 from sentry.models.project import Project
 from sentry.signals import release_commits_updated
 
@@ -11,6 +10,7 @@ from sentry.signals import release_commits_updated
 @release_commits_updated.connect(weak=False)
 def handle_release_commits_updated(removed_commit_ids, added_commit_ids, **kwargs):
     from sentry.incidents.tasks import calculate_incident_suspects
+    from sentry.incidents.models import IncidentSuspectCommit
 
     incident_ids = (
         IncidentSuspectCommit.objects.filter(commit_id__in=removed_commit_ids | added_commit_ids)
@@ -27,6 +27,8 @@ def add_project_to_include_all_rules(instance, created, **kwargs):
 
     if not created:
         return
+
+    from sentry.incidents.models import AlertRule
 
     alert_rules = AlertRule.objects.filter(
         organization=instance.organization, include_all_projects=True
