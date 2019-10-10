@@ -29,6 +29,7 @@ import {
 type GridEditableProps<DataRow, ColumnKey extends keyof DataRow> = {
   isEditable?: boolean;
   isLoading?: boolean;
+  isColumnDragging: boolean;
   error?: React.ReactNode | null;
 
   /**
@@ -225,6 +226,7 @@ class GridEditable<
           {columnOrder.map((column, i) => (
             <GridHeadCell
               key={`${i}.${column.key}`}
+              isColumnDragging={this.props.isColumnDragging}
               isPrimary={column.isPrimary}
               isEditing={enableEdit}
               indexColumnOrder={i}
