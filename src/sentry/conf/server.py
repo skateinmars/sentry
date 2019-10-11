@@ -948,9 +948,9 @@ SENTRY_SMTP_HOST = "localhost"
 SENTRY_SMTP_PORT = 1025
 
 SENTRY_PLUGIN_REGISTRATIONS = [
-    "sentry.lang.java.JavaPlugin",
-    "sentry.lang.javascript.JavascriptPlugin",
-    "sentry.lang.native.NativePlugin",
+    "sentry.lang.java.plugin.JavaPlugin",
+    "sentry.lang.javascript.plugin.JavascriptPlugin",
+    "sentry.lang.native.plugin.NativePlugin",
 ]
 
 SENTRY_INTERFACES = {

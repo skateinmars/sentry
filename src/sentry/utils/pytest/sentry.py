@@ -154,7 +154,10 @@ def pytest_configure(config):
     from importlib import import_module
 
     for plugin_path in settings.SENTRY_PLUGIN_REGISTRATIONS:
-        register(import_module(plugin_path))
+        tmp = plugin_path.split(".")
+        module_path, plugin_class = ".".join(tmp[:-1]), tmp[-1]
+        module = import_module(module_path)
+        register(getattr(module, plugin_class))
 
     monkeypatch_django_migrations()
 
