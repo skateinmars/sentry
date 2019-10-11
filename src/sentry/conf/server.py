@@ -324,15 +324,17 @@ INSTALLED_APPS = (
     "sentry.lang.java",
     "sentry.lang.javascript",
     "sentry.lang.native",
-    "sentry.plugins.sentry_interface_types",
-    "sentry.plugins.sentry_mail",
-    "sentry.plugins.sentry_urls",
-    "sentry.plugins.sentry_useragents",
-    "sentry.plugins.sentry_webhooks",
+    # oh god sentry.plugins.__init__ is fucking everywhere
+    #    "sentry.plugins.sentry_interface_types",
+    #    "sentry.plugins.sentry_mail",
+    #    "sentry.plugins.sentry_urls",
+    #    "sentry.plugins.sentry_useragents",
+    #    "sentry.plugins.sentry_webhooks",
     "social_auth",
     "sudo",
-    "sentry.eventstream",
-    "sentry.auth.providers.google",
+    #    "sentry.eventstream",
+    # not here tho
+    #    "sentry.auth.providers.google",
     "django.contrib.staticfiles",
 )
 
