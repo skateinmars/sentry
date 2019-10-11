@@ -148,6 +148,14 @@ def pytest_configure(config):
 
     django.setup()
 
+    # TODO: mirror this in sentry initializer probably, i think they're decoupled
+    # also move this to its own func in runner.initializer
+    from sentry.plugins import register
+    from importlib import import_module
+
+    for plugin_path in settings.SENTRY_PLUGIN_REGISTRATIONS:
+        register(import_module(plugin_path))
+
     monkeypatch_django_migrations()
 
     bind_cache_to_option_store()
