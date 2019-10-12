@@ -1702,3 +1702,9 @@ SOUTH_MIGRATION_CONVERSIONS = (
         "Please upgrade to Sentry 9.1.2 before upgrading to any later versions.",
     ),
 )
+
+# TODO: This forces the tables to sync automatically, similar to syncdb. This is much
+# faster than running migrations. Only set this in tests (maybe run one set of tests
+# with full migrations to prove they don't error).
+# TODO: In Django 1.9 the value can be set to `None` rather than a nonexistent value.
+MIGRATION_MODULES = {"sentry": "sentry.migrations_not_used_in_tests"}
