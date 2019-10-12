@@ -127,9 +127,6 @@ def pytest_configure(config):
     patcher = mock.patch("socket.getfqdn", return_value="localhost")
     patcher.start()
 
-    if not settings.SOUTH_TESTS_MIGRATE:
-        settings.INSTALLED_APPS = tuple(i for i in settings.INSTALLED_APPS if i != "south")
-
     from sentry.runner.initializer import (
         bind_cache_to_option_store,
         bootstrap_options,
