@@ -22,7 +22,6 @@ fromEntries.shim();
  * Enzyme configuration
  */
 Enzyme.configure({adapter: new Adapter()});
-Enzyme.configure({disableLifecycleMethods: true});
 
 /**
  * Mock (current) date to alway be below
